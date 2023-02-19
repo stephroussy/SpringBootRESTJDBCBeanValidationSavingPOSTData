@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.servers.Server;
 
+//tells Spring to map jeeps URI to the class DefaultJeepSalesController
 @RequestMapping("/jeeps")
 @OpenAPIDefinition(info = @Info(title = "Jeep Sales Service"), servers = {
     @Server(url = "http://localhost:8080", description = "Local server.")})
@@ -57,9 +58,10 @@ public interface JeepSalesController {
           description = "The trim level (i.e., 'Sport')")
           }
       )
-  
+  //getmapping maps to the fetchjeeps method
   @GetMapping
   @ResponseStatus(code = HttpStatus.OK)
+  //requestParam maps parameter named model to the model variable and trim to the trim variable
   List<Jeep> fetchJeeps(@RequestParam JeepModel model, 
       @RequestParam String trim);
   }

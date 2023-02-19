@@ -1,6 +1,8 @@
 package com.promineotech.jeep.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
@@ -39,13 +41,44 @@ class FetchJeepTest {
   
   @Test
   void testThatJeepsAreReturnedWhenAValidModelAndTrimAreSupplied() {
+    //Given: a valid model, trim and URI
     JeepModel model = JeepModel.WRANGLER;
     String trim = "Sport";
     String uri = String.format("http://localhost:%d/jeeps?model=%s&trim=%s", serverPort, model, trim);
     
-    ResponseEntity<List<Jeep>> response = restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<>() {});    
+    //When: a connection is made to the URI
+    ResponseEntity<List<Jeep>> response = getRestTemplate().exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<>() {});    
     
+    //Then: a success (OK - 200) status code is returned
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    
+    //And: the actual list returned is the same as the expected list
+    //method to return a list of expected Jeep objects based on model and trim
+    List <Jeep> expected = buildExpected();
+    //assert that the actual list of jeeps returned by the server is the same as the expected list
+    assertThat(response.getBody()).isEqualTo(expected);
   }
-
+//method to return a list of expected Jeep objects based on model and trim
+  protected List<Jeep> buildExpected() {
+    List<Jeep> list = new LinkedList<>();
+    
+    // @formatter:off
+    list.add(Jeep.builder()
+        .modelId(JeepModel.WRANGLER)
+        .trimLevel("SPORT")
+        .numDoors(2)
+        .wheelSize(17)
+        .basePrice(new BigDecimal(28475.00))
+        .build());
+    
+    list.add(Jeep.builder()
+        .modelId(JeepModel.WRANGLER)
+        .trimLevel("SPORT")
+        .numDoors(4)
+        .wheelSize(17)
+        .basePrice(new BigDecimal(31975.00))
+        .build());
+ // @formatter:on
+    return list;
+  }
 }
