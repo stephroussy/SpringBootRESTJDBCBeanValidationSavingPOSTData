@@ -62,7 +62,7 @@ public interface JeepSalesController {
   @GetMapping
   @ResponseStatus(code = HttpStatus.OK)
   //requestParam maps parameter named model to the model variable and trim to the trim variable
-  List<Jeep> fetchJeeps(@RequestParam JeepModel model, 
-      @RequestParam String trim);
-  }
+  List<Jeep> fetchJeeps(@RequestParam(required = false) JeepModel model, @RequestParam(required = false) String trim);
+//formatter:on  
+}
 

@@ -2,6 +2,7 @@ package com.promineotech.jeep.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -54,9 +55,11 @@ class FetchJeepTest {
     
     //And: the actual list returned is the same as the expected list
     //method to return a list of expected Jeep objects based on model and trim
-    List <Jeep> expected = buildExpected();
+    List<Jeep> actual = response.getBody();
+    List<Jeep> expected = buildExpected();
+    
     //assert that the actual list of jeeps returned by the server is the same as the expected list
-    assertThat(response.getBody()).isEqualTo(expected);
+    assertThat(actual).isEqualTo(expected);
   }
 //method to return a list of expected Jeep objects based on model and trim
   protected List<Jeep> buildExpected() {
@@ -65,20 +68,23 @@ class FetchJeepTest {
     // @formatter:off
     list.add(Jeep.builder()
         .modelId(JeepModel.WRANGLER)
-        .trimLevel("SPORT")
+        .trimLevel("Sport")
         .numDoors(2)
         .wheelSize(17)
-        .basePrice(new BigDecimal(28475.00))
+        .basePrice(new BigDecimal("28475.00"))
         .build());
     
     list.add(Jeep.builder()
         .modelId(JeepModel.WRANGLER)
-        .trimLevel("SPORT")
+        .trimLevel("Sport")
         .numDoors(4)
         .wheelSize(17)
-        .basePrice(new BigDecimal(31975.00))
+        .basePrice(new BigDecimal("31975.00"))
         .build());
  // @formatter:on
+    
+    Collections.sort(list);
+    
     return list;
   }
 }
